@@ -169,6 +169,9 @@ final class SampleData {
             return MockMessage(location: locations[randomNumberLocation], sender: sender, messageId: uniqueID, date: date)
         case "Emoji":
             return MockMessage(emoji: emojis[randomNumberEmoji], sender: sender, messageId: uniqueID, date: date)
+        case "Audio":
+            let url = Bundle.main.url(forResource: "SampleAudio_0.4mb", withExtension: ".mp3")
+            return MockMessage(audio: url!, sender: sender, messageId: uniqueID, date: date)
         default:
             fatalError("Unrecognized mock message type")
         }
