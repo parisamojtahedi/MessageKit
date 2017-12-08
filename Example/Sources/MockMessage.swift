@@ -27,23 +27,23 @@ import MessageKit
 import CoreLocation
 
 struct MockMessage: MessageType {
-	
+
 	var messageId: String
 	var sender: Sender
 	var sentDate: Date
 	var data: MessageData
-	
+
     init(data: MessageData, sender: Sender, messageId: String, date: Date) {
 		self.data = data
 		self.sender = sender
 		self.messageId = messageId
 		self.sentDate = date
 	}
-	
+
     init(text: String, sender: Sender, messageId: String, date: Date) {
         self.init(data: .text(text), sender: sender, messageId: messageId, date: date)
 	}
-	
+
     init(attributedText: NSAttributedString, sender: Sender, messageId: String, date: Date) {
         self.init(data: .attributedText(attributedText), sender: sender, messageId: messageId, date: date)
 	}
@@ -65,4 +65,7 @@ struct MockMessage: MessageType {
         self.init(data: .emoji(emoji), sender: sender, messageId: messageId, date: date)
     }
 
+    init(audio: URL, sender: Sender, messageId: String, date: Date) {
+        self.init(data: .audio(audio: audio), sender: sender, messageId: messageId, date: date)
+    }
 }

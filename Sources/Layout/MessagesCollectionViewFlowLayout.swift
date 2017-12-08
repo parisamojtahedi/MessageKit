@@ -434,6 +434,13 @@ private extension MessagesCollectionViewFlowLayout {
             let width = messagesLayoutDelegate.widthForMedia(message: message, at: indexPath, with: maxWidth, in: messagesCollectionView)
             let height = messagesLayoutDelegate.heightForMedia(message: message, at: indexPath, with: maxWidth, in: messagesCollectionView)
             messageContainerSize = CGSize(width: width, height: height)
+        case .audio:
+            guard let layoutDelegate = messagesLayoutDelegate as? AudioMessageLayoutDelegate else {
+                fatalError("Layout object attempting to size media message type and MediaMessageLayoutDelegate is not set.")
+            }
+            let width = layoutDelegate.widthForAudioMessage(message: message, at: indexPath, with: maxWidth, in: messagesCollectionView)
+            let height = layoutDelegate.heightForAudioMessage(message: message, at: indexPath, with: maxWidth, in: messagesCollectionView)
+            messageContainerSize = CGSize(width: width, height: height)
         case .location:
             let width = messagesLayoutDelegate.widthForLocation(message: message, at: indexPath, with: maxWidth, in: messagesCollectionView)
             let height = messagesLayoutDelegate.heightForLocation(message: message, at: indexPath, with: maxWidth, in: messagesCollectionView)

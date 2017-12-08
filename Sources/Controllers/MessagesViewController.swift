@@ -61,6 +61,8 @@ open class MessagesViewController: UIViewController {
     /// A Boolean value used to determine if `viewDidLayoutSubviews()` has been called.
     private var isFirstLayout: Bool = true
 
+    private var audioEventHandler: AudioMessageEventHandler?
+
     // MARK: - View Life Cycle
 
     open override func viewDidLoad() {
@@ -73,7 +75,8 @@ open class MessagesViewController: UIViewController {
         messagesCollectionView.keyboardDismissMode = .interactive
         messagesCollectionView.alwaysBounceVertical = true
         
-        
+        self.audioEventHandler = AudioHandler(collectionView: self.messagesCollectionView)
+
         setupSubviews()
         setupConstraints()
         registerReusableViews()
@@ -117,7 +120,8 @@ open class MessagesViewController: UIViewController {
         messagesCollectionView.register(TextMessageCell.self)
         messagesCollectionView.register(MediaMessageCell.self)
         messagesCollectionView.register(LocationMessageCell.self)
-
+        messagesCollectionView.register(AudioMessageCell.self)
+        
         messagesCollectionView.register(MessageFooterView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter)
         messagesCollectionView.register(MessageHeaderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader)
         messagesCollectionView.register(MessageDateHeaderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader)
@@ -235,6 +239,11 @@ extension MessagesViewController: UICollectionViewDataSource {
             return cell
         case .location:
     	    let cell = messagesCollectionView.dequeueReusableCell(LocationMessageCell.self, for: indexPath)
+            cell.configure(with: message, at: indexPath, and: messagesCollectionView)
+            return cell
+        case .audio(_):
+            let cell = messagesCollectionView.dequeueReusableCell(AudioMessageCell.self, for: indexPath)
+            self.audioEventHandler?.configure(cell: cell, at: indexPath)
             cell.configure(with: message, at: indexPath, and: messagesCollectionView)
             return cell
         }
